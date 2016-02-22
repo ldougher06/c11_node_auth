@@ -2,11 +2,17 @@
 
 const express = require('express');
 const chalk = require('chalk');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+
 const RedisStore = require('connect-redis')(session);
 const PORT = process.env.PORT || 3000;
+
 const SESSION_SECRET = process.env.SESSION_SECRET || 'logansecret';
+
+const userRoutes = require('./lib/user/user.routes.js')
+
 const app = express();
 
 app.set('view engine', 'jade');
@@ -26,33 +32,25 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(userRoutes);
+
+app.locals.title = '';
+
+// grabs the user.email and displays to '/', otherwise 'Guest'
+// locals is available to all renderers, but only during the request
+app.use((req, res, next) => {
+  app.locals.user = req.session.user || {email: 'Guest'};
+  next();
+});
+
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/login', (req, res) => {
-  res.render('login');
-});
+mongoose.connect('mongodb://localhost:27017/c11_node_auth', (err) => {
+  if (err) throw err;
 
-app.post('/login', (req, res) => {
-  res.redirect('/');
+  app.listen(PORT, () => {
+    console.log(chalk.magenta.bold('Node.js server started. ') + chalk.red.bold.bgYellow(`Listening on PORT ${PORT}`));
+  });
 });
-
-app.get('/register', (req, res) => {
-  res.render('register');
-});
-
-app.post('/register', (req, res) => {
-  if(req.body.password === req.body.verify) {
-    res.redirect('/login');
-  } else {
-    res.render('register', {
-      email: req.body.email,
-      message: 'passwords do not match'
-    });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(chalk.magenta.bold('Node.js server started. ') + chalk.red.bold.bgYellow(`Listening on PORT ${PORT}`));
-})
