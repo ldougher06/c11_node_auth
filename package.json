@@ -12,6 +12,18 @@
     "type": "git",
     "url": "git+https://github.com/ldougher06/c11_node_auth.git"
   },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "mocha": true,
+      "node": true,
+      "es6": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+      "no-console": 0
+    }
+  },
   "author": "Logan Dougher <logan.dougher@gmail.com> (https://logandougher.com/)",
   "license": "MIT",
   "bugs": {
