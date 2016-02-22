@@ -1,0 +1,29 @@
+{
+  "name": "c11_node_auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ldougher06/c11_node_auth.git"
+  },
+  "author": "Logan Dougher <logan.dougher@gmail.com> (https://logandougher.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ldougher06/c11_node_auth/issues"
+  },
+  "homepage": "https://github.com/ldougher06/c11_node_auth#readme",
+  "devDependencies": {
+    "nodemon": "^1.9.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "jade": "^1.11.0"
+  }
+}
