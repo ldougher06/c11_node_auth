@@ -2,6 +2,7 @@
 
 const express = require('express');
 const chalk = require('chalk');
+const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -18,6 +19,9 @@ const app = express();
 app.set('view engine', 'jade');
 
 app.use(bodyParser.urlencoded({extended: false}));
+
+// override with POST having ?_method=DELETE in index.jade
+app.use(methodOverride('_method'));
 
 app.use(session({
   secret: SESSION_SECRET,
