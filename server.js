@@ -3,6 +3,7 @@
 const express = require('express');
 const chalk = require('chalk');
 const methodOverride = require('method-override');
+const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 const SESSION_SECRET = process.env.SESSION_SECRET || 'logansecret';
 
-const userRoutes = require('./lib/user/user.routes.js')
+const userRoutes = require('./lib/user/user.routes.js');
 
 const app = express();
 
@@ -28,10 +29,15 @@ app.use(session({
   store: new RedisStore()
 }));
 
+// remember to place below session ^^
+app.use(passport.initialize());
+app.use(passport.session());
+
+// logs the # of req or visits per path
 app.use((req, res, next) => {
   req.session.visits = req.session.visits || {};
   req.session.visits[req.url] = req.session.visits[req.url] || 0;
-  req.session.visits[req.url]++ // logs the # of req or visits per path
+  req.session.visits[req.url]++
   console.log(req.session);
   next();
 });
@@ -43,7 +49,8 @@ app.locals.title = '';
 // grabs the user.email and displays to '/', otherwise 'Guest'
 // locals is available to all renderers, but only during the request
 app.use((req, res, next) => {
-  app.locals.user = req.session.user || {email: 'Guest'};
+  console.log(req.user);
+  res.locals.user = req.user || { email: 'Guest' };
   next();
 });
 
