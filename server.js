@@ -29,18 +29,19 @@ app.use(session({
   store: new RedisStore()
 }));
 
+// logs the # of req or visits per path
+// app.use((req, res, next) => {
+//   req.session.visits = req.session.visits || {};
+//   req.session.visits[req.url] = req.session.visits[req.url] || 0;
+//   req.session.visits[req.url]++
+//   console.log(req.session);
+//   next();
+// });
+
 // remember to place below session ^^
 app.use(passport.initialize());
 app.use(passport.session());
 
-// logs the # of req or visits per path
-app.use((req, res, next) => {
-  req.session.visits = req.session.visits || {};
-  req.session.visits[req.url] = req.session.visits[req.url] || 0;
-  req.session.visits[req.url]++
-  console.log(req.session);
-  next();
-});
 
 app.use(userRoutes);
 
